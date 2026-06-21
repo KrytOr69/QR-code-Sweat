@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Votre page</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+.background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #000;
+  z-index: 0;
+}
+
+.content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding-bottom: 200px;
+}
+
+@media (min-width: 768px) {
+  .content-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.text-container {
+  text-align: center;
+  cursor: text;
+  padding: 20px 15px 80px 15px;
+  max-width: 95vw;
+  user-select: text;
+}
+
+@media (min-width: 768px) {
+  .text-container {
+    padding: 40px 20px;
+  }
+
+.editable-text {
+  outline: none;
+  padding: 10px;
+  margin: -10px;
+  transition: background 0.2s;
+  word-break: break-word;
+  white-space: pre-wrap;
+  font-size: 20px;
+}
+
+@media (min-width: 768px) {
+  .editable-text {
+    font-size: 24px;
+  }
+}
+
+.editable-text:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.editable-text.view-mode {
+  cursor: default;
+}
+
+.instagram-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#instagramLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+#instagramLink:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+#instagramLogo {
+  display: block;
+}
+
+.toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  border-top: 1px solid #e0e0e0;
+  padding: 8px;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    left: auto;
+    bottom: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-top: none;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    max-height: none;
+    justify-content: flex-start;
+  }
+}
+
+.toolbar.view-mode {
+  display: none;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+  border-right: 1px solid #e0e0e0;
+}
+
+@media (max-width: 480px) {
+  .control-group {
+    padding: 0 4px;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    flex-basis: 100%;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .control-group:last-child {
+    border-bottom: none;
+  }
+}
+
+.control-group:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+label {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  label {
+    font-size: 10px;
+  }
+}
+
+input[type="file"],
+input[type="color"],
+input[type="range"],
+input[type="number"],
+select {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  input[type="file"],
+  input[type="color"],
+  input[type="range"],
+  input[type="number"],
+  select {
+    font-size: 10px;
+    padding: 4px;
+  }
+}
+
+input[type="color"] {
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+input[type="range"] {
+  width: 80px;
+}
+
+select {
+  padding: 6px 8px;
+}
+
+.button-group {
+  display: flex;
+  gap: 4px;
+}
+
+button {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  button {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}
+
+button:hover {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button i {
+  margin-right: 4px;
+}
+
+.position-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.position-slider-group input {
+  width: 100px;
+}
+
+.share-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 350px;
+  display: none;
+}
+
+.share-modal.active {
+  display: block;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  display: none;
+}
+
+.modal-overlay.active {
+  display: block;
+}
+
+.share-modal h2 {
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.share-modal p {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.share-link {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-family: monospace;
+  word-break: break-all;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.share-link button {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+input[type="file"]::file-selector-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+
+<div class="background-container" id="bgContainer"></div>
+
+<div class="content-wrapper" id="content-wrapper">
+  <div class="text-container" id="textContainer">
+    <div class="editable-text" id="editableText" contenteditable="true" spellcheck="false">Écrivez votre texte ici...</div>
+    <div class="instagram-section" id="instagramSection" style="margin-top: 20px;">
+      <a id="instagramLink" href="" target="_blank" title="Instagram" style="display: inline-block; color: inherit; text-decoration: none;">
+        <svg id="instagramLogo" viewBox="0 0 24 24" width="48" height="48" style="display: block;">
+          <defs>
+            <linearGradient id="instaGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#fdf497;stop-opacity:1" />
+              <stop offset="5%" style="stop-color:#fdf497;stop-opacity:1" />
+              <stop offset="45%" style="stop-color:#fd5949;stop-opacity:1" />
+              <stop offset="60%" style="stop-color:#d6249f;stop-opacity:1" />
+              <stop offset="90%" style="stop-color:#285AEB;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="20" height="20" fill="url(#instaGradient)" rx="4.5"/>
+          <path d="M12 6.865c-2.832 0-5.135 2.303-5.135 5.135S9.168 17.135 12 17.135s5.135-2.303 5.135-5.135S14.832 6.865 12 6.865zm0 8.47c-1.84 0-3.335-1.495-3.335-3.335S10.16 8.665 12 8.665s3.335 1.495 3.335 3.335-1.495 3.335-3.335 3.335z" fill="white"/>
+          <circle cx="17.5" cy="6.5" r="0.662" fill="white"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar" id="toolbar">
+  <div class="control-group">
+    <label>Image URL</label>
+    <input type="text" id="bgImageUrl" placeholder="https://..." style="width: 160px; font-size: 10px;">
+  </div>
+
+  <div class="control-group">
+    <label>Police</label>
+    <select id="fontSelect">
+      <option value="Arial, sans-serif">Arial</option>
+      <option value="'Georgia', serif">Georgia</option>
+      <option value="'Courier New', monospace">Courier</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+      <option value="'Segoe UI', sans-serif">Segoe UI</option>
+      <option value="'Comic Sans MS', cursive">Comic Sans</option>
+      <option value="'Garamond', serif">Garamond</option>
+      <option value="'Verdana', sans-serif">Verdana</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <label>Taille</label>
+    <input type="number" id="fontSize" min="12" max="120" value="32" style="width: 50px;">
+  </div>
+
+  <div class="control-group">
+    <label>Couleur</label>
+    <input type="color" id="textColor" value="#000000">
+  </div>
+
+  <div class="control-group">
+    <label>Ombrage</label>
+    <input type="range" id="shadowIntensity" min="0" max="20" step="0.1" value="0">
+  </div>
+
+  <div class="control-group position-slider-group">
+    <label style="margin: 0;">Position ↕</label>
+    <input type="range" id="verticalPosition" min="-50" max="50" value="0">
+  </div>
+
+  <div class="control-group">
+    <label>Instagram URL</label>
+    <input type="text" id="instagramUrl" placeholder="https://instagram.com/..." style="width: 140px; font-size: 10px;">
+  </div>
+
+  <div class="control-group">
+    <label>Logo size</label>
+    <input type="number" id="instagramSize" min="20" max="120" value="48" style="width: 50px;">
+  </div>
+
+  <div class="button-group">
+    <button id="shareBtn" title="Générer lien de partage"><i class="fas fa-link"></i>Partager</button>
+    <button id="downloadBtn" title="Télécharger l'image"><i class="fas fa-download"></i>DL</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="share-modal" id="shareModal">
+  <button class="close-btn" id="closeModal">&times;</button>
+  <h2>Partager votre page</h2>
+  <p>Lien d'édition (vous pouvez modifier)</p>
+  <div class="share-link">
+    <span id="editLink" style="flex: 1; overflow: hidden;"></span>
+    <button id="copyEditBtn">Copier</button>
+  </div>
+  <p>Lien de lecture (autres ne peuvent pas modifier)</p>
+  <div class="share-link">
+    <span id="viewLink" style="flex: 1; overflow: hidden;"></span>
+    <button id="copyViewBtn">Copier</button>
+  </div>
+</div>
+
+<script>
+const APP = {
+  mode: 'edit',
+  hasStateFromURL: false,
+  state: {
+    text: 'Écrivez votre texte ici...',
+    bgImageUrl: '',
+    font: 'Arial, sans-serif',
+    fontSize: 32,
+    textColor: '#000000',
+    verticalPosition: 0,
+    shadowIntensity: 0,
+    instagramUrl: '',
+    instagramSize: 48
+  },
+
+  init() {
+    this.detectMode();
+    this.loadStateFromURL();
+    if (!this.hasStateFromURL) {
+      this.loadState();
+    }
+    this.setupListeners();
+    this.applyState();
+    this.updateToolbarVisibility();
+  },
+
+  loadStateFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get('data');
+    
+    if (data) {
+      try {
+        // Décompresser et décoder
+        const decompressed = LZString.decompressFromEncodedURIComponent(data);
+        const decoded = JSON.parse(decompressed);
+        this.state = { ...this.state, ...decoded };
+        this.hasStateFromURL = true;
+      } catch (e) {
+        console.error('Erreur décodage URL:', e);
+        this.hasStateFromURL = false;
+      }
+    } else {
+      this.hasStateFromURL = false;
+    }
+  },
+
+  detectMode() {
+    const params = new URLSearchParams(window.location.search);
+    this.mode = params.get('mode') || 'edit';
+  },
+
+  loadState() {
+    try {
+      const saved = localStorage.getItem('pageState');
+      if (saved) {
+        const parsedState = JSON.parse(saved);
+        // Fusionner avec l'état par défaut pour ne pas perdre les nouvelles propriétés
+        this.state = { ...this.state, ...parsedState };
+      }
+    } catch (e) {
+      console.error('Erreur lors du chargement:', e);
+      // Si erreur, garder l'état par défaut
+    }
+  },
+
+  saveState() {
+    localStorage.setItem('pageState', JSON.stringify(this.state));
+  },
+
+  applyState() {
+    document.getElementById('editableText').innerHTML = this.state.text;
+    document.getElementById('fontSelect').value = this.state.font;
+    document.getElementById('fontSize').value = this.state.fontSize;
+    document.getElementById('textColor').value = this.state.textColor;
+    document.getElementById('verticalPosition').value = this.state.verticalPosition;
+    document.getElementById('shadowIntensity').value = this.state.shadowIntensity;
+    document.getElementById('bgImageUrl').value = this.state.bgImageUrl;
+
+    const textEl = document.getElementById('editableText');
+    textEl.style.fontFamily = this.state.font;
+    textEl.style.fontSize = this.state.fontSize + 'px';
+    textEl.style.color = this.state.textColor;
+    
+    const shadowIntensity = this.state.shadowIntensity;
+    if (shadowIntensity > 0) {
+      const blur = shadowIntensity * 8;
+      const spread = shadowIntensity * 2;
+      const opacity = shadowIntensity / 20;
+      textEl.style.textShadow = `0 0 ${blur}px rgba(0, 0, 0, ${opacity}), ${spread}px ${spread}px ${blur}px rgba(0, 0, 0, ${opacity})`;
+    } else {
+      textEl.style.textShadow = 'none';
+    }
+
+    const container = document.getElementById('textContainer');
+    const wrapper = document.getElementById('content-wrapper');
+    const maxOffset = (wrapper.clientHeight - container.clientHeight) / 2;
+    const offset = (this.state.verticalPosition / 50) * maxOffset;
+    container.style.transform = `translateY(${offset}px)`;
+
+    if (this.state.bgImageUrl) {
+      document.getElementById('bgContainer').style.backgroundImage = `url('${this.state.bgImageUrl}')`;
+    }
+
+    document.getElementById('instagramUrl').value = this.state.instagramUrl;
+    document.getElementById('instagramSize').value = this.state.instagramSize;
+    document.getElementById('instagramLink').href = this.state.instagramUrl;
+    document.getElementById('instagramLogo').style.width = this.state.instagramSize + 'px';
+    document.getElementById('instagramLogo').style.height = this.state.instagramSize + 'px';
+    
+    if (this.state.instagramUrl) {
+      document.getElementById('instagramSection').style.display = 'block';
+    } else {
+      document.getElementById('instagramSection').style.display = 'none';
+    }
+  },
+
+  setupListeners() {
+    const textEl = document.getElementById('editableText');
+    
+    textEl.addEventListener('input', () => {
+      this.state.text = textEl.innerHTML;
+      this.saveState();
+    });
+
+    textEl.addEventListener('focus', () => {
+      if (this.mode === 'view') textEl.blur();
+    });
+
+    document.getElementById('bgImageUrl').addEventListener('input', (e) => {
+      this.state.bgImageUrl = e.target.value;
+      if (this.state.bgImageUrl) {
+        document.getElementById('bgContainer').style.backgroundImage = `url('${this.state.bgImageUrl}')`;
+      }
+      this.saveState();
+    });
+
+    document.getElementById('bgImageUrl').addEventListener('change', (e) => {
+      this.state.bgImageUrl = e.target.value;
+      if (this.state.bgImageUrl) {
+        document.getElementById('bgContainer').style.backgroundImage = `url('${this.state.bgImageUrl}')`;
+      }
+      this.saveState();
+    });
+
+    document.getElementById('fontSelect').addEventListener('change', (e) => {
+      this.state.font = e.target.value;
+      textEl.style.fontFamily = this.state.font;
+      this.saveState();
+    });
+
+    document.getElementById('fontSize').addEventListener('change', (e) => {
+      this.state.fontSize = parseInt(e.target.value);
+      textEl.style.fontSize = this.state.fontSize + 'px';
+      this.saveState();
+    });
+
+    document.getElementById('textColor').addEventListener('change', (e) => {
+      this.state.textColor = e.target.value;
+      textEl.style.color = this.state.textColor;
+      this.saveState();
+    });
+
+    document.getElementById('verticalPosition').addEventListener('input', (e) => {
+      this.state.verticalPosition = parseInt(e.target.value);
+      const container = document.getElementById('textContainer');
+      const wrapper = document.getElementById('content-wrapper');
+      const maxOffset = (wrapper.clientHeight - container.clientHeight) / 2;
+      const offset = (this.state.verticalPosition / 50) * maxOffset;
+      container.style.transform = `translateY(${offset}px)`;
+      this.saveState();
+    });
+
+    document.getElementById('shadowIntensity').addEventListener('input', (e) => {
+      this.state.shadowIntensity = parseFloat(e.target.value);
+      const textEl = document.getElementById('editableText');
+      const shadowIntensity = this.state.shadowIntensity;
+      if (shadowIntensity > 0) {
+        const blur = shadowIntensity * 8;
+        const spread = shadowIntensity * 2;
+        const opacity = shadowIntensity / 20;
+        textEl.style.textShadow = `0 0 ${blur}px rgba(0, 0, 0, ${opacity}), ${spread}px ${spread}px ${blur}px rgba(0, 0, 0, ${opacity})`;
+      } else {
+        textEl.style.textShadow = 'none';
+      }
+      this.saveState();
+    });
+
+    document.getElementById('instagramUrl').addEventListener('change', (e) => {
+      this.state.instagramUrl = e.target.value;
+      document.getElementById('instagramLink').href = this.state.instagramUrl;
+      if (this.state.instagramUrl) {
+        document.getElementById('instagramSection').style.display = 'block';
+      } else {
+        document.getElementById('instagramSection').style.display = 'none';
+      }
+      this.saveState();
+    });
+
+    document.getElementById('instagramSize').addEventListener('change', (e) => {
+      this.state.instagramSize = parseInt(e.target.value);
+      document.getElementById('instagramLogo').style.width = this.state.instagramSize + 'px';
+      document.getElementById('instagramLogo').style.height = this.state.instagramSize + 'px';
+      this.saveState();
+    });
+
+    document.getElementById('shareBtn').addEventListener('click', () => this.showShareModal());
+    document.getElementById('downloadBtn').addEventListener('click', () => this.downloadImage());
+    document.getElementById('closeModal').addEventListener('click', () => this.closeShareModal());
+    document.getElementById('modalOverlay').addEventListener('click', () => this.closeShareModal());
+    document.getElementById('copyEditBtn').addEventListener('click', () => this.copyToClipboard('editLink'));
+    document.getElementById('copyViewBtn').addEventListener('click', () => this.copyToClipboard('viewLink'));
+  },
+
+  updateToolbarVisibility() {
+    const toolbar = document.getElementById('toolbar');
+    const textEl = document.getElementById('editableText');
+    
+    if (this.mode === 'view') {
+      toolbar.classList.add('view-mode');
+      textEl.classList.add('view-mode');
+      textEl.contentEditable = false;
+    }
+  },
+
+  showShareModal() {
+    const baseUrl = window.location.origin + window.location.pathname;
+    
+    // Créer un état épuré sans l'image de fond encodée (mais avec l'URL)
+    const shareState = {
+      text: this.state.text,
+      bgImageUrl: this.state.bgImageUrl,
+      font: this.state.font,
+      fontSize: this.state.fontSize,
+      textColor: this.state.textColor,
+      verticalPosition: this.state.verticalPosition,
+      shadowIntensity: this.state.shadowIntensity,
+      instagramUrl: this.state.instagramUrl,
+      instagramSize: this.state.instagramSize
+    };
+    
+    // Encoder et compresser l'état (sans image base64, juste l'URL)
+    const jsonState = JSON.stringify(shareState);
+    const compressed = LZString.compressToEncodedURIComponent(jsonState);
+    const shareUrl = baseUrl + '?mode=view&data=' + compressed;
+    
+    document.getElementById('editLink').textContent = baseUrl + '?mode=edit';
+    document.getElementById('viewLink').textContent = shareUrl;
+    document.getElementById('shareModal').classList.add('active');
+    document.getElementById('modalOverlay').classList.add('active');
+  },
+
+  closeShareModal() {
+    document.getElementById('shareModal').classList.remove('active');
+    document.getElementById('modalOverlay').classList.remove('active');
+  },
+
+  copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Lien copié!');
+    });
+  },
+
+  downloadImage() {
+    alert('Pour télécharger la page : Ctrl+P (ou Cmd+P) → "Enregistrer en PDF" ou prenez une capture d\'écran.');
+  }
+};
+
+APP.init();
+</script>
+
+</body>
+</html>
